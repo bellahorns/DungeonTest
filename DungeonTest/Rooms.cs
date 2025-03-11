@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -9,14 +9,14 @@ namespace DungeonTest
 {
     internal class Rooms
     {
-        static Ranndom rand = new Ranndom();
+        static Random rand = new Random();
+
         public static string getRoomType()
         {
             switch (rand.Next(0, 5))
             {
                 case 0:
                     return "Cells";
-                    break;
                 case 1:
                     return "Vampire Nest";
                 case 2:
@@ -41,7 +41,7 @@ namespace DungeonTest
                 default:
                     return false;
             }
-            
+
         }
 
         public string roomType = getRoomType();
@@ -56,12 +56,12 @@ namespace DungeonTest
         //    }
         //}
 
-        static void roomActions(roomType, isMonster, isPotion)
+        public static string roomActions()
         {
-            Console.WriteLine(roomType);
-            Console.WriteLine(isMonster);
-            Console.WriteLine(isPotion);
-
+            string Roomtype = getRoomType();
+            bool isMonster = halfChance();
+            bool isPotion = halfChance();
+            system
         }
     }
 }
