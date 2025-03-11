@@ -15,7 +15,6 @@ namespace DungeonTest
         {
             Console.WriteLine("This room is lit. You spot a rusty sword and pick it up.");
             Console.WriteLine("Your captor hears you and turns!");
-            Console.WriteLine("You are now fighting a human rouge.");
             Console.ReadKey();
             Console.Clear();
             Combat(false, "Human Rouge", "Sword", 4);
@@ -73,8 +72,9 @@ namespace DungeonTest
 
 
             Console.WriteLine("You are now fighting a " + n + ".");
-            Console.WriteLine("They wield a " + weapon + " that has a weapon value of " + p + "."); 
-            while (h > 0) 
+            Console.WriteLine("They wield a " + w + " that has a weapon value of " + p + ".");
+            Console.ReadKey();
+            while (h > 0  && Program.currentPlayer.health > 0) 
             {
                 Console.Clear();
                 Console.WriteLine("Potions: " + Program.currentPlayer.potions);
@@ -82,9 +82,9 @@ namespace DungeonTest
                 Console.WriteLine(n + ": " + h);
                 Console.WriteLine("-------------------------");
                 Console.WriteLine("|  (A)ttack    (D)efend  |");
-                Console.WriteLine("|  (R)un       (H)eal    |");
+                Console.WriteLine("|  (H)eal                |");
                 Console.WriteLine("-------------------------");
-                Console.WriteLine("Make your move! Enter A, D, R, or H:");
+                Console.WriteLine("Make your move! Enter A, D, or H:");
                 string move = Console.ReadLine();
                 if (move.ToLower() == "a")
                 {
@@ -110,28 +110,6 @@ namespace DungeonTest
                     Program.currentPlayer.health -= damage;
                     h -= attack;
                 }
-                else if (move.ToLower() == "r")
-                {
-                    //run
-                    Console.WriteLine("You try to escape!");
-                    if (rand.Next(0, 2) == 0)
-                    {
-                        int damage = p - Program.currentPlayer.armorValue;
-                        if (damage < 0)
-                            damage = 0;
-                        Console.WriteLine("As you sprint away from the " + n + ", it grabs your arm and stops your escape!");
-                        Console.WriteLine("You lose " + damage + " health, and are unable to escape.");
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        Console.WriteLine("You run from the " + n + " and you successfully escape!");
-                        Console.WriteLine("You enter the next room.");
-                        //allow player to enter next room
-                        Console.ReadKey();
-                    }
-
-                }
                 else if (move.ToLower() == "h")
                 {
                     //heal
@@ -141,6 +119,7 @@ namespace DungeonTest
                         if (damage < 0)
                             damage = 0;
                         Console.WriteLine("You reach for your potions, but find you do not have any left! You are unable to heal yourself.");
+                        Program.currentPlayer.health -= damage;
                         Console.WriteLine("While you were distracted, the " + n + "attacks! You lose " + damage + "health.");
                     }
                     else
@@ -148,10 +127,12 @@ namespace DungeonTest
                         Console.WriteLine("You grab a potion from your bag, drinking it as fast as you can.");
                         int potionValue = 5;
                         if (potionValue + Program.currentPlayer.health > 10)
-                            potionValue = 5 - (potionValue + Program.currentPlayer.health - 10);
-                        else
-                            potionValue = 5;
+                            potionValue = potionValue - (potionValue + Program.currentPlayer.health - 10);
+  
+                        Program.currentPlayer.health += potionValue;
+                        Program.currentPlayer.potions -= 1;
                         Console.WriteLine("You gain " + potionValue + " health.");
+
 
                     }
                 }
@@ -165,8 +146,13 @@ namespace DungeonTest
 
             }
             Console.Clear();
-            Console.WriteLine("You have killed the " + n + ".");
-            Console.ReadKey();
+            if (Program.currentPlayer.health <= 0)
+                Console.WriteLine(n + " deals a fatel blow and everything goes dark.");
+            else
+            {
+                Console.WriteLine("You have killed the " + n + ".");
+                Console.ReadKey();
+            }
         }
 
         public static string GetName()
