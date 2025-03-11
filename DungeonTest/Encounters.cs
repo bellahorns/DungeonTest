@@ -10,9 +10,6 @@ namespace DungeonTest
     internal class Encounters
     {
         static Random rand = new Random();
-        //Encounter Generic
-
-
         //Encounters
         public static void FirstEncounter()
         {
@@ -21,27 +18,62 @@ namespace DungeonTest
             Console.WriteLine("You are now fighting a human rouge.");
             Console.ReadKey();
             Console.Clear();
-            Combat(false, "Human Rouge", 1, 4);
+            Combat(false, "Human Rouge", "Sword", 4);
+        }
+        public static void BasicEncounter()
+        {
+            Console.WriteLine("You have been spotted and have no choice but to fight!");
+            Combat(true, "", "", 0);
         }
 
 
         //Encounter Tools
-        public static void Combat(bool random, string name, int power, int health)
+        public static void Combat(bool random, string name, string weapon, int health)
         {
             string n = "";
+            string w = "";
             int p = 0;
             int h = 0;
+            
+            //Define the name, health, and weapon of a random monster
             if (random)
             {
-
+                n = GetName();
+                h = rand.Next(1, 8);
+                w = GetWeapon();
             }
+            //Define the name, health, and weapon of a pre determined monster
             else
             {
                 n = name;
-                p = power;
                 h = health;
+                w = weapon;
             }
 
+            //Define the power of a monster, based on the weapon
+            switch (w)
+            {
+                case "Sword":
+                    p=2;
+                    break;
+                case "Dagger":
+                    p=1;
+                    break;
+                case "Hammer":
+                    p = 2;
+                    break;
+                case "Rapier":
+                    p = 3;
+                    break;
+                default:
+                    p = 2;
+                    break;
+
+            }
+
+
+            Console.WriteLine("You are now fighting a " + n + ".");
+            Console.WriteLine("They wield a " + weapon + " that has a weapon value of " + p + "."); 
             while (h > 0) 
             {
                 Console.Clear();
@@ -103,7 +135,6 @@ namespace DungeonTest
                 else if (move.ToLower() == "h")
                 {
                     //heal
-                    Console.WriteLine("You try to escape!");
                     if (Program.currentPlayer.potions==0)
                     {
                         int damage = p - Program.currentPlayer.armorValue;
@@ -133,6 +164,46 @@ namespace DungeonTest
                 Console.ReadKey();
 
             }
+            Console.Clear();
+            Console.WriteLine("You have killed the " + n + ".");
+            Console.ReadKey();
         }
+
+        public static string GetName()
+        {
+            switch (rand.Next(0, 4))
+            {
+                case 0:
+                    return "Vampire";
+                case 1:
+                    return "Troll";
+                case 2:
+                    return "Witch";
+                case 3:
+                    return "Cyclopes";
+                default:
+                    return "Human Rouge";
+
+            }
+        }
+        
+        public static string GetWeapon()
+        {
+            switch (rand.Next(0, 4))
+            {
+                case 0:
+                    return "Sword";
+                case 1:
+                    return "Dagger";
+                case 2:
+                    return "Hammer";
+                case 3:
+                    return "Rapier";
+                default:
+                    return "Spear";
+
+            }
+        }
+
     }
 }

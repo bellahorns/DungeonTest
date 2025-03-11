@@ -13,6 +13,12 @@ namespace DungeonTest
         {
             Start();
             Encounters.FirstEncounter();
+            Story();
+            while (currentPlayer.roomCount >= 5)
+            {
+                Rooms.roomActions();
+                currentPlayer.roomCount += 1;
+            }
         }
 
         static void Start() 
@@ -29,6 +35,15 @@ namespace DungeonTest
             Console.ReadKey();
             Console.WriteLine("You feel around in the darkness and find a door. You quietly open it and go through.");
             Console.WriteLine("You see your captor in the next room, facing away from you.");
+        }
+
+        static void Story()
+        {
+            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("With your captor dead on the floor you deside to go through his pockets.");
+            Console.WriteLine("There isn't much, but you find a crumpled up peice of paper in his pocket.");
+            Console.WriteLine("It looks like... a map! There are 5 rooms till the exit. It's time to start your escape...");
         }
 
     }
